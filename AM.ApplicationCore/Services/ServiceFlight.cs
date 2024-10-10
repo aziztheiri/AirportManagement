@@ -115,7 +115,50 @@ namespace AM.ApplicationCore.Services
             }
         }
 
-       
+        public double DurationAverage(string destiation)
+        {
+            var query1 = (from f in Flights
+                         where f.Destination.Equals(destiation)
+                         select f.EstimatedDuration).Average();
+            var query2 = Flights.Where(f => f.Destination.Equals(destiation)).Select(f => f.EstimatedDuration)
+                .Average();
+            return query1;
+        }
+
+        public List<Flight> OrderedDurationFlights()
+        {
+            var query1 = from f in Flights
+                         orderby f.EstimatedDuration descending
+                         select f;
+            var query2 = Flights.OrderByDescending(f => f.EstimatedDuration);
+            return query1.ToList();
+        }
+
+        public List<Traveller> SeniorTravellers(Flight flight)
+        {
+            var query1 = (from p in flight.Passengers.OfType<Traveller>()
+                         orderby p.BirthDate
+                         select p).Take(3);
+            var query2 = flight.Passengers.OfType<Traveller>().OrderBy(p=>p.BirthDate).Take(3);
+            return query1.ToList();
+                         
+        }
+
+        public IEnumerable<IGrouping<string, Flight>> DestinationGroupedFlights()
+        {
+            var query1 = from f in Flights
+                         group f by  f.Destination;
+            var query2 = Flights.GroupBy(f => f.Destination);
+            foreach(var grouped in query1)
+            {
+                Console.WriteLine("Destination : " + grouped.Key);
+                foreach(var f in grouped)
+                {
+                    Console.WriteLine("Decollage : " + f.FlightDate);
+                }
+            }
+            return query1;
+        }
     }
 }
 
