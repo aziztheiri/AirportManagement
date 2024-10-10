@@ -12,7 +12,7 @@ namespace AM.ApplicationCore.Services
     {
         public List<Flight> Flights { get; set; } = new List<Flight>();
 
-        public List<DateTime> GetFlightDates(string destination)
+       /* public List<DateTime> GetFlightDates(string destination)
         {
             List<DateTime> result = new List<DateTime>();
             foreach (var flight in Flights)
@@ -31,6 +31,46 @@ namespace AM.ApplicationCore.Services
             }
             return result;
 
+        }*/
+      
+        public List<DateTime> GetFlightDates(string destination)
+        {
+            var query1 = from f in Flights
+                         where f.Destination == destination
+                         select f.FlightDate;
+            var query2 = Flights.Where(f => f.Destination == destination).Select(f => f.FlightDate).ToList();
+            return query1.ToList();
+        }
+
+        public void ShowFlightDetails(Plane plane)
+        {
+            var flightDetails = Flights
+                   .Where(flight => flight.Plane == plane)
+                   .Select(flight => new { flight.FlightDate, flight.Destination });
+                   
+            var flightDetails2 = from f in Flights
+                                 where f.Plane == plane
+                                 select new
+                                 {
+                                     f.FlightDate,
+                                     f.Destination
+                                 };
+
+            foreach (var f in flightDetails)
+            {
+                Console.WriteLine("Flight date " + f.FlightDate + "Flight Destination" + f.FlightDate);
+            }
+        }
+      public  int ProgrammedFlightNumber(DateTime startDate)
+        {
+            var query1 = Flights
+                         .Where(f => DateTime.Compare(f.FlightDate, startDate) > 0 && (f.FlightDate - startDate).TotalDays <= 7)
+                         .Count();
+            var query2 = (from f in Flights
+                          where DateTime.Compare(f.FlightDate, startDate) > 0 && (f.FlightDate - startDate).TotalDays <= 7
+                          select f).Count();
+
+            return query1;         
         }
 
         public void GetFlights(string filterType, string filterValue)
@@ -74,6 +114,8 @@ namespace AM.ApplicationCore.Services
                     break;
             }
         }
+
+       
     }
 }
 
