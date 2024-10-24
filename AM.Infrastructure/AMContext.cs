@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AM.ApplicationCore.Domain;
+using AM.Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
 namespace AM.Infrastructure
 {
@@ -18,6 +19,13 @@ namespace AM.Infrastructure
         {
             optionsBuilder.UseLazyLoadingProxies()
                 .UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AirportMgmtDb;Integrated Security=True;");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new PlaneConfiguration());
+            modelBuilder.ApplyConfiguration(new FlightConfiguration());
+
         }
     }
 }

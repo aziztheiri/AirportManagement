@@ -3,18 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace AM.ApplicationCore.Domain
 {
     public class Passenger
     {
         public int Id { get; set; }
+        [StringLength(7)]
         public string PassportNumber { get; set; }
+        [MaxLength(25,ErrorMessage ="FirstName must be 25 caracters max ")]
+        [MinLength(3,ErrorMessage ="FirstName must have a minimum of 3 caracters")]
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        [Display(Name="Date of Birth")]
+        [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
-        public int TelNumber { get; set; }
-        public string EmailAddress { get; set; }
+        [RegularExpression(@"^[0-9]{8}$",ErrorMessage ="Invalid Phone Number!")]
+        public int? TelNumber { get; set; }
+        [DataType(DataType.EmailAddress)]
+        public string? EmailAddress { get; set; }
         public virtual ICollection<Flight> Flights { get; set; }
 
         public override string? ToString()
