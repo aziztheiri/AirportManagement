@@ -12,10 +12,11 @@ namespace AM.ApplicationCore.Domain
         public int Id { get; set; }
         [StringLength(7)]
         public string PassportNumber { get; set; }
-        [MaxLength(25,ErrorMessage ="FirstName must be 25 caracters max ")]
-        [MinLength(3,ErrorMessage ="FirstName must have a minimum of 3 caracters")]
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+     //   [MaxLength(25,ErrorMessage ="FirstName must be 25 caracters max ")]
+       // [MinLength(3,ErrorMessage ="FirstName must have a minimum of 3 caracters")]
+       // public string FirstName { get; set; }
+       // public string LastName { get; set; }
+       public FullName FullName { get; set; }
         [Display(Name="Date of Birth")]
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
@@ -24,18 +25,19 @@ namespace AM.ApplicationCore.Domain
         [DataType(DataType.EmailAddress)]
         public string? EmailAddress { get; set; }
         public virtual ICollection<Flight> Flights { get; set; }
+        public virtual ICollection<Ticket> Tickets { get; set; }
 
         public override string? ToString()
         {
-            return "First Name : " + FirstName + "Last Name :" + LastName + "BirthDate : " + BirthDate;
+            return "First Name : " + FullName.FirstName + "Last Name :" + FullName.LastName + "BirthDate : " + BirthDate;
         }
         public bool CheckProfile(string nom , string prenom)
         {
-            return this.FirstName == nom && this.LastName == prenom;
+            return this.FullName.FirstName == nom && this.FullName.LastName == prenom;
         }
         public bool CheckProfile(string nom, string prenom,string email)
         {
-            return this.FirstName == nom && this.LastName == prenom && this.EmailAddress == email;
+            return this.FullName.FirstName == nom && this.FullName.LastName == prenom && this.EmailAddress == email;
         }
         public virtual void PassengerType()
         {

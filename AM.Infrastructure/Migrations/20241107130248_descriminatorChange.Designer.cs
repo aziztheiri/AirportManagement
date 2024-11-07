@@ -4,6 +4,7 @@ using AM.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AM.Infrastructure.Migrations
 {
     [DbContext(typeof(AMContext))]
-    partial class AMContextModelSnapshot : ModelSnapshot
+    [Migration("20241107130248_descriminatorChange")]
+    partial class descriminatorChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,13 +78,22 @@ namespace AM.Infrastructure.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
                     b.Property<string>("EmailAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IsTraveller")
+                    b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(1)
-                        .HasColumnType("nvarchar(1)");
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PassportNumber")
                         .IsRequired()
@@ -95,7 +107,7 @@ namespace AM.Infrastructure.Migrations
 
                     b.ToTable("Passengers");
 
-                    b.HasDiscriminator<string>("IsTraveller").HasValue("0");
+                    b.HasDiscriminator().HasValue("Passenger");
 
                     b.UseTphMappingStrategy();
                 });
@@ -121,37 +133,6 @@ namespace AM.Infrastructure.Migrations
                     b.HasKey("PlaneId");
 
                     b.ToTable("MyPlanes", (string)null);
-                });
-
-            modelBuilder.Entity("AM.ApplicationCore.Domain.Ticket", b =>
-                {
-                    b.Property<int>("PassengerFk")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FlightFk")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumTicket")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateAchat")
-                        .HasColumnType("datetime2");
-
-                    b.Property<float>("Prix")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Siege")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("VIP")
-                        .HasColumnType("bit");
-
-                    b.HasKey("PassengerFk", "FlightFk", "NumTicket");
-
-                    b.HasIndex("FlightFk");
-
-                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("FlightPassenger", b =>
@@ -183,7 +164,7 @@ namespace AM.Infrastructure.Migrations
                     b.Property<float>("Salary")
                         .HasColumnType("real");
 
-                    b.HasDiscriminator().HasValue("2");
+                    b.HasDiscriminator().HasValue("Staff");
                 });
 
             modelBuilder.Entity("AM.ApplicationCore.Domain.Traveller", b =>
@@ -198,7 +179,7 @@ namespace AM.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasDiscriminator().HasValue("1");
+                    b.HasDiscriminator().HasValue("Traveller");
                 });
 
             modelBuilder.Entity("AM.ApplicationCore.Domain.Flight", b =>
@@ -209,55 +190,6 @@ namespace AM.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Plane");
-                });
-
-            modelBuilder.Entity("AM.ApplicationCore.Domain.Passenger", b =>
-                {
-                    b.OwnsOne("AM.ApplicationCore.Domain.FullName", "FullName", b1 =>
-                        {
-                            b1.Property<int>("PassengerId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("FirstName")
-                                .IsRequired()
-                                .HasMaxLength(30)
-                                .HasColumnType("nvarchar(30)")
-                                .HasColumnName("PassFirstName");
-
-                            b1.Property<string>("LastName")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("PassLastName");
-
-                            b1.HasKey("PassengerId");
-
-                            b1.ToTable("Passengers");
-
-                            b1.WithOwner()
-                                .HasForeignKey("PassengerId");
-                        });
-
-                    b.Navigation("FullName")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("AM.ApplicationCore.Domain.Ticket", b =>
-                {
-                    b.HasOne("AM.ApplicationCore.Domain.Flight", "Flight")
-                        .WithMany("Tickets")
-                        .HasForeignKey("FlightFk")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AM.ApplicationCore.Domain.Passenger", "Passenger")
-                        .WithMany("Tickets")
-                        .HasForeignKey("PassengerFk")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Flight");
-
-                    b.Navigation("Passenger");
                 });
 
             modelBuilder.Entity("FlightPassenger", b =>
@@ -273,16 +205,6 @@ namespace AM.Infrastructure.Migrations
                         .HasForeignKey("PassengersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("AM.ApplicationCore.Domain.Flight", b =>
-                {
-                    b.Navigation("Tickets");
-                });
-
-            modelBuilder.Entity("AM.ApplicationCore.Domain.Passenger", b =>
-                {
-                    b.Navigation("Tickets");
                 });
 
             modelBuilder.Entity("AM.ApplicationCore.Domain.Plane", b =>
