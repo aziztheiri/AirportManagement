@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AM.ApplicationCore.Interfaces
 {
-    public interface IServiceFlight
+    public interface IServiceFlight : IService<Flight>
     {
         public List<DateTime> GetFlightDates(string destination);
         public void GetFlights(string filterType, string filterValue);

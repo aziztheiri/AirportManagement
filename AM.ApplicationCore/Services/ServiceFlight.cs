@@ -8,31 +8,38 @@ using System.Threading.Tasks;
 
 namespace AM.ApplicationCore.Services
 {
-    public class ServiceFlight : IServiceFlight
+    public class ServiceFlight : Service<Flight>, IServiceFlight
     {
         public List<Flight> Flights { get; set; } = new List<Flight>();
+        private IUnitOfWork unitOfWork;
 
-       /* public List<DateTime> GetFlightDates(string destination)
+        public ServiceFlight(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            List<DateTime> result = new List<DateTime>();
-            foreach (var flight in Flights)
-            {
-                if (flight.Destination == destination)
-                {
-                    result.Add(flight.FlightDate);
-                }
-            }
-            for (var i = 0; i < Flights.Count; i++)
-            {
-                if (Flights[i].Destination == destination)
-                {
-                    result.Add(Flights[i].FlightDate);
-                }
-            }
-            return result;
 
-        }*/
-      
+            this.unitOfWork = unitOfWork;
+        }
+
+        /* public List<DateTime> GetFlightDates(string destination)
+         {
+             List<DateTime> result = new List<DateTime>();
+             foreach (var flight in Flights)
+             {
+                 if (flight.Destination == destination)
+                 {
+                     result.Add(flight.FlightDate);
+                 }
+             }
+             for (var i = 0; i < Flights.Count; i++)
+             {
+                 if (Flights[i].Destination == destination)
+                 {
+                     result.Add(Flights[i].FlightDate);
+                 }
+             }
+             return result;
+
+         }*/
+
         public List<DateTime> GetFlightDates(string destination)
         {
             var query1 = from f in Flights

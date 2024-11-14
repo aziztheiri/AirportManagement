@@ -34,9 +34,14 @@ staff.PassengerType();*/
 //serviceFlight.GetFlights("FlightDate", new DateTime(2022, 02, 01, 21, 10, 10).ToString());
 //serviceFlight.ShowFlightDetails(TestData.BoingPlane);
 AMContext context = new AMContext();
+/*
 TestData.flight2.Airline = "test";
 TestData.flight2.Departure = "gabes";
 context.Flights.Add(TestData.flight2);
-
 context.SaveChanges();
-Console.WriteLine(context.Flights.First());
+Console.WriteLine(context.Flights.First());*/
+//GenericRepository<Plane> genericRepository = new GenericRepository<Plane>(context);
+UnitOfWork unitOfWork = new UnitOfWork(context,typeof(GenericRepository<>));
+ServicePlane servicePlane = new ServicePlane(unitOfWork);
+servicePlane.Add(TestData.BoingPlane);
+servicePlane.Save();
