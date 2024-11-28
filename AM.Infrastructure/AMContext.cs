@@ -10,6 +10,10 @@ namespace AM.Infrastructure
 {
     public class AMContext : DbContext
     {
+        public AMContext(DbContextOptions<AMContext> options) : base(options) {
+
+        }
+
         public DbSet<Plane> Planes { get; set; }
         public DbSet<Flight> Flights { get; set; }
         public DbSet<Passenger> Passengers { get; set; }
