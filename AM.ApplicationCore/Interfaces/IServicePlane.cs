@@ -9,6 +9,9 @@ namespace AM.ApplicationCore.Interfaces
 {
     public interface IServicePlane : IService<Plane>
     {
-
+        public List<Passenger> GetPassenger (Plane plane);
+        public IEnumerable<IGrouping<int,Flight>> GetFlights (int n);
+        public Boolean IsAvailablePlane(Flight flight,int n);
+        public void DeletePlanes();
     }
 }

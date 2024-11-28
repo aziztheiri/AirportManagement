@@ -44,4 +44,4 @@ Console.WriteLine(context.Flights.First());*/
 UnitOfWork unitOfWork = new UnitOfWork(context,typeof(GenericRepository<>));
 ServicePlane servicePlane = new ServicePlane(unitOfWork);
 servicePlane.Add(TestData.BoingPlane);
-servicePlane.Save();
+//servicePlane.Save();
