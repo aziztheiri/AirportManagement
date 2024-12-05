@@ -24,6 +24,7 @@ namespace AM.ApplicationCore.Domain
         public int? TelNumber { get; set; }
         [DataType(DataType.EmailAddress)]
         public string? EmailAddress { get; set; }
+
         public virtual ICollection<Flight> Flights { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }
 

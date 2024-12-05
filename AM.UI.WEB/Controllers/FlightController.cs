@@ -37,7 +37,7 @@ private readonly IServicePlane servicePlane;
         // GET: FlightController/Create
         public ActionResult Create()
         {
-            ViewBag.PlaneId = new SelectList(servicePlane.GetMany(), "PlaneId");
+            ViewBag.PlaneId = new SelectList(servicePlane.GetMany(), "PlaneId","PlaneId");
             return View();
         }
 
@@ -70,7 +70,7 @@ private readonly IServicePlane servicePlane;
             {
                 return NotFound();
             }
-            ViewBag.PlaneId = new SelectList(servicePlane.GetMany(), "PlaneId");
+            ViewBag.PlaneId = new SelectList(servicePlane.GetMany(), "PlaneId", "PlaneId");
 
             return View(flight);
         }

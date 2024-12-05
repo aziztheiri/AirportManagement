@@ -1,0 +1,78 @@
+﻿@using AM.ApplicationCore.Domain
+@model IEnumerable<AM.ApplicationCore.Domain.Ticket>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Passenger)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateAchat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prix)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Siege)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VIP)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (item.Passenger is Traveller)
+                    {
+                        @Html.DisplayFor(modelItem => item.Passenger.FullName)
+                    }
+                    else if (item.Passenger is Staff)
+                    {
+                        @Html.DisplayFor(modelItem => item.Passenger.FullName)
+                    }
+                    else
+                    {
+                        @("Unknown Passenger Type")
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Flight.Airline)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateAchat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Prix)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Siege)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VIP)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { PassengerFK = item.PassengerFk,FlightFK=item.FlightFk,NumTicket=item.NumTicket}) |
+                    @Html.ActionLink("Details", "Details", new { PassengerFK = item.PassengerFk, FlightFK = item.FlightFk, NumTicket = item.NumTicket }) |
+                    @Html.ActionLink("Delete", "Delete", new { PassengerFK = item.PassengerFk, FlightFK = item.FlightFk, NumTicket = item.NumTicket })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

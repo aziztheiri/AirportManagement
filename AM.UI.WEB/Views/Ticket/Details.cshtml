@@ -1,0 +1,66 @@
+﻿@using AM.ApplicationCore.Domain
+@model AM.ApplicationCore.Domain.Ticket
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Ticket</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Passenger)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Passenger is Traveller)
+            {
+                @Html.DisplayFor(model => model.Passenger.FullName)
+            }
+            else if (Model.Passenger is Staff)
+            {
+                @Html.DisplayFor(model => model.Passenger.FullName)
+            }
+            else
+            {
+                @("Unknown Passenger Type")
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Flight)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Flight.Airline)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateAchat)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateAchat)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Prix)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Prix)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Siege)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Siege)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.VIP)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.VIP)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
