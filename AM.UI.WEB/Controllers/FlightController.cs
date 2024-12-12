@@ -4,6 +4,8 @@ using AM.ApplicationCore.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.IO;
+using System.Numerics;
 
 namespace AM.UI.WEB.Controllers
 {
@@ -18,9 +20,24 @@ private readonly IServicePlane servicePlane;
         }
 
         // GET: FlightController
-        public ActionResult Index()
+        public ActionResult Index(DateTime? dateDepart)
         {
-            return View(serviceFlight.GetMany().ToList());
+            List<Flight> flights = new List<Flight>();
+
+            if (dateDepart == null)
+            {
+                flights = serviceFlight.GetMany().ToList();
+            }
+            else
+            {
+                flights = serviceFlight.GetFlightByDate((DateTime)dateDepart);
+            }
+            foreach (Flight item in flights)
+            {
+                item.NbrTicket = serviceFlight.GetTicketNbre(item);
+
+            }
+            return View(flights);
         }
 
         // GET: FlightController/Details/5
@@ -33,7 +50,15 @@ private readonly IServicePlane servicePlane;
             }
             return View(flight);
         }
-
+        public ActionResult _Details(int id)
+        {
+            var flight = serviceFlight.GetById(id);
+            if (flight == null)
+            {
+                return NotFound();
+            }
+            return PartialView(flight);
+        }
         // GET: FlightController/Create
         public ActionResult Create()
         {
@@ -44,10 +69,17 @@ private readonly IServicePlane servicePlane;
         // POST: FlightController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Flight flight)
+        public ActionResult Create(Flight flight,IFormFile AirlineImage)
         {
             try
             {
+                if (AirlineImage != null)
+                {
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", AirlineImage.FileName);
+                    Stream stream = new FileStream(path, FileMode.Create);
+                    AirlineImage.CopyTo(stream);
+                    flight.Airline = AirlineImage.FileName;
+                }
                 serviceFlight.Add(flight);
                 serviceFlight.Commit();
                 return RedirectToAction(nameof(Index));
@@ -78,10 +110,17 @@ private readonly IServicePlane servicePlane;
         // POST: FlightController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Flight flight)
+        public ActionResult Edit(Flight flight, IFormFile AirlineImage)
         {
             try
             {
+                if (AirlineImage != null)
+                {
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", AirlineImage.FileName);
+                    Stream stream = new FileStream(path, FileMode.Create);
+                    AirlineImage.CopyTo(stream);
+                    flight.Airline = AirlineImage.FileName;
+                }
                 serviceFlight.Update(flight);
                 serviceFlight.Commit();
                 return RedirectToAction(nameof(Index));

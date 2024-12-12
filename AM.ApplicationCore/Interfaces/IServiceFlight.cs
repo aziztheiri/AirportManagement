@@ -17,5 +17,7 @@ namespace AM.ApplicationCore.Interfaces
         List<Flight> OrderedDurationFlights();
         List<Traveller> SeniorTravellers(Flight flight);
         IEnumerable<IGrouping<String,Flight>> DestinationGroupedFlights();
+        List<Flight> GetFlightByDate(DateTime dateDepart);
+        public int GetTicketNbre(Flight flight);
     }
 }

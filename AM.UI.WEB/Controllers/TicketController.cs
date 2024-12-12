@@ -23,8 +23,12 @@ namespace AM.UI.WEB.Controllers
 
 
         // GET: TicketController
-        public ActionResult Index()
+        public ActionResult Index(float? prix)
         {
+            if(prix != null)
+            {
+                return View(serviceTicket.GetTicketByPrice((float)prix));
+            }
             return View(serviceTicket.GetMany().ToList());
         }
 

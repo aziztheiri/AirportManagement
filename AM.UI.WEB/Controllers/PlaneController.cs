@@ -18,7 +18,13 @@ namespace AM.UI.WEB.Controllers
         // GET: PlaneController
         public ActionResult Index()
         {
-            return View(servicePlane.GetMany().ToList());
+            List<Plane> planes = servicePlane.GetMany().ToList() ;
+            foreach (var item in planes)
+            {
+               item.NbrVols= servicePlane.GetFlightNbre(item);
+                
+            }
+            return View(planes);
         }
 
         // GET: PlaneController/Details/5
@@ -31,7 +37,15 @@ namespace AM.UI.WEB.Controllers
             }
             return View(plane);
         }
-
+        public ActionResult _Details(int id)
+        {
+            var plane = servicePlane.GetById(id);
+            if (plane == null)
+            {
+                return NotFound();
+            }
+            return PartialView(plane);
+        }
         // GET: PlaneController/Create
         public ActionResult Create()
         {

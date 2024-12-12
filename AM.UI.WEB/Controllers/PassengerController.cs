@@ -34,7 +34,16 @@ namespace AM.UI.WEB.Controllers
             return View(passenger);
          
         }
+        public ActionResult _Details(int id)
+        {
+            var passenger = servicePassenger.GetById(id);
+            if (passenger == null)
+            {
+                return NotFound();
+            }
+            return PartialView(passenger);
 
+        }
         // GET: PassengerController/Create
         public ActionResult Create()
         {

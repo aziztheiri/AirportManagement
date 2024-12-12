@@ -17,5 +17,10 @@ namespace AM.ApplicationCore.Services
 
             this.unitOfWork = unitOfWork;
         }
+
+        public List<Ticket> GetTicketByPrice(float prix)
+        {
+            return GetMany(e => e.Prix > prix).ToList();
+        }
     }
 }

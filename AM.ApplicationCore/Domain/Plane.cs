@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AM.ApplicationCore.Domain
 {
@@ -19,6 +20,8 @@ namespace AM.ApplicationCore.Domain
         public int Capacity { get; set; }
         public DateTime ManufactureDate { get; set; }
         public PlaneType PlaneType { get; set; }
+        [NotMapped]
+        public int NbrVols { get; set; }
         public virtual ICollection<Flight> Flights { get; set; }
    /*     public Plane(int capacity, DateTime manufactureDate, PlaneType planeType)
         {

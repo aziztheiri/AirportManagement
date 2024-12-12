@@ -6,7 +6,14 @@
 }
 
 <h1>Index</h1>
-
+<form asp-action="index">
+    <fieldset>
+        <legend>Recherche</legend>
+        Saisir un prix  :
+        <input type="number" name="prix" />
+        <input type="submit" value="Recherchez" />
+    </fieldset>
+</form>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -31,6 +38,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.VIP)
             </th>
+
             <th></th>
         </tr>
     </thead>
@@ -39,22 +47,14 @@
         {
             <tr>
                 <td>
-                    @if (item.Passenger is Traveller)
-                    {
-                        @Html.DisplayFor(modelItem => item.Passenger.FullName)
-                    }
-                    else if (item.Passenger is Staff)
-                    {
-                        @Html.DisplayFor(modelItem => item.Passenger.FullName)
-                    }
-                    else
-                    {
-                        @("Unknown Passenger Type")
-                    }
+                    <a asp-controller="Passenger" asp-action="_Details" asp-route-id="@item.PassengerFk">@item.Passenger.Id</a>
+
                 </td>
+
                 <td>
-                    @Html.DisplayFor(modelItem => item.Flight.Airline)
+                    <a asp-controller="Flight" asp-action="_Details" asp-route-id="@item.FlightFk">@item.Flight.FlightId</a>
                 </td>
+                
                 <td>
                     @Html.DisplayFor(modelItem => item.DateAchat)
                 </td>

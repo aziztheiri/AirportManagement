@@ -13,5 +13,6 @@ namespace AM.ApplicationCore.Interfaces
         public IEnumerable<IGrouping<int,Flight>> GetFlights (int n);
         public Boolean IsAvailablePlane(Flight flight,int n);
         public void DeletePlanes();
+        public int GetFlightNbre(Plane plane);
     }
 }

@@ -22,7 +22,8 @@ namespace AM.ApplicationCore.Domain
         [ForeignKey("PlaneId")]
         public virtual Plane Plane { get; set; }
         public string Airline { get; set; }
-
+        [NotMapped]
+        public int NbrTicket { get; set; }
         public override string? ToString()
         {
             return "Flight Date : " + FlightDate + "Destination : " + Destination + "EffectiveArrival :" + EffectiveArrival;  

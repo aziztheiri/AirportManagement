@@ -9,6 +9,6 @@ namespace AM.ApplicationCore.Interfaces
 {
     public interface IServiceTicket : IService<Ticket>
     {
-
+        public List<Ticket> GetTicketByPrice(float prix);
     }
 }

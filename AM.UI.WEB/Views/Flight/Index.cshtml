@@ -5,7 +5,13 @@
 }
 
 <h1>Index</h1>
-
+<form asp-action="index">
+    <fieldset>
+        <legend>Recherche</legend>
+        Saisir une date de départ : <input  type ="date" name="dateDepart"/>
+        <input type="submit" value="Recherchez" />
+    </fieldset>
+</form>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -33,6 +39,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Airline)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NbrTicket)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -54,16 +63,27 @@
             <td>
                 @Html.DisplayFor(modelItem => item.EstimatedDuration)
             </td>
+           
             <td>
-                @Html.DisplayFor(modelItem => item.Plane.PlaneId)
+               @*  @Html.DisplayFor(modelItem => item.Plane.PlaneId) *@
+               <a asp-controller="Plane" asp-action="_Details" asp-route-id="@item.PlaneId">@item.Plane.PlaneId</a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Airline)
+                @* @Html.DisplayFor(modelItem => item.Airline) *@
+                <img  src="~/uploads/@item.Airline" width="50" height="50"/>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.FlightId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.FlightId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.FlightId">Delete</a>
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NbrTicket)
+                </td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <partial name ="_FlightDetails" model="item" />
             </td>
         </tr>
 }

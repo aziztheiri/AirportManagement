@@ -166,6 +166,16 @@ namespace AM.ApplicationCore.Services
             }
             return query1;
         }
+
+        public List<Flight> GetFlightByDate(DateTime dateDepart)
+        {
+            return GetMany(e=>DateTime.Compare(e.FlightDate.Date, dateDepart.Date) ==0).ToList();
+        }
+
+        public int GetTicketNbre(Flight flight)
+        {
+            return GetById(flight.FlightId).Tickets.Count();
+        }
     }
 }
 

@@ -28,6 +28,13 @@ namespace AM.ApplicationCore.Services
             Commit();
         }
 
+        public int GetFlightNbre(Plane plane)
+        {
+           
+          return GetById(plane.PlaneId).Flights.Count();
+
+;        }
+
         public IEnumerable<IGrouping<int, Flight>> GetFlights(int n)
         {
             return GetMany().OrderByDescending(p=>p.PlaneId).Take(n)
